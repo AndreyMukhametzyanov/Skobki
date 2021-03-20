@@ -1,40 +1,28 @@
 package com.exercises;
-
 import java.util.Arrays;
 
-class StrAnalyzer {
-    private MyStack stk = new MyStack(10000);
-    private final char[] leftChars = new char[]{'(', '{', '['};
-    private final char[] rigthChars = new char[]{')', '}', ']'};
+    class StrAnalyzer {
+        private MyStack stk;
+        private final char[] leftChars = {'(', '{', '['};
+        private final char[] rigthChars = {')', '}', ']'};
 
-    public StrAnalyzer() {
-    }
-
-    public boolean isValid(String str) {
-        char[] array = str.toCharArray();
-        char[] var3 = array;
-        int var4 = array.length;
-
-        for(int var5 = 0; var5 < var4; ++var5) {
-            char c = var3[var5];
-            if (Arrays.asList(array).contains(this.leftChars)) {
-                this.stk.push(c);
-            }
-
-            if (Arrays.asList(array).contains(this.rigthChars)) {
-                if (this.stk.peek() != this.reverseChar(c)) {
-                    return false;
-                }
-
-                this.stk.pop();
-            }
+        public StrAnalyzer () {
+            stk = new MyStack(10000);
         }
 
-        return this.stk.isEmpty();
-    }
+        public boolean isValid (String str) {
+            char[] array = str.toCharArray();
+
+            for(char c : array) {
+                if(isEx(leftChars,c)) {stk.push(c);}
+
+                if(isEx(rigthChars,c)) {if(stk.peek() == reverseChar(c)) {stk.pop();} else { return false; }}
+            }
+            return stk.isEmpty();
+        }
 
     private char reverseChar(char c) {
-        switch(c) {
+        switch (c) {
             case '(':
                 return ')';
             case ')':
@@ -50,5 +38,14 @@ class StrAnalyzer {
             default:
                 return ' ';
         }
+    }
+
+    public static boolean isEx(char[] massive, char elem) {
+        for (Character c1 : massive) {
+            if (c1 == elem) {
+                return true;
+            }
+        }
+        return false;
     }
 }
